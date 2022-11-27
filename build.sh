@@ -12,8 +12,8 @@ fi
 
 # where this .sh file lives
 DIRNAME=$(dirname "$0")
-SCRIPT_DIR=$(cd "$DIRNAME" || exit; pwd)
-cd "$SCRIPT_DIR" || exit
+SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
+cd "$SCRIPT_DIR" || exit 1
 
 DEFAULT_TOP_DIR="${SCRIPT_DIR}"
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
@@ -25,11 +25,33 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 # draw box around string for pretty output
 . "${TOP_DIR}/scripts/common/drawbox.sh"
 
+LOGO=$(cat <<END
+
+  ╔════════════════════════════╗  
+  ║                            ║  
+  ║                            ║  
+  ║                            ║  
+  ║          ██╗  ██╗          ║
+  ║          ██║ ██╔╝          ║
+  ║          █████╔╝           ║
+  ║          ██╔═██╗           ║
+  ║          ██║  ██╗          ║
+  ║          ╚═╝  ╚═╝          ║  
+  ║                            ║  
+  ║                            ║  
+  ║                            ║  
+  ╚════════════════════════════╝  
+  Potassium ${VERSION}
+  
+END
+)
+
+echo "${LOGO}"
+
 # tell the user what we're about to do
 box_out "
-About to build Potassium:
-
-Target:                 ${TARGET_FRIENDLY_NAME}
+Target Name:            ${TARGET_FRIENDLY_NAME}
+Target ID:              ${TARGET_ID}
 
 Kernel Repo:            ${TARGET_KERNEL_REPO}
 Kernel Tag:             ${TARGET_KERNEL_TAG}
@@ -43,14 +65,25 @@ Target Distro:          ${TARGET_DISTRO}
 Target Distro Codename: ${TARGET_DISTRO_CODENAME}
 "
 
-# build the kernel
-. "${TOP_DIR}/scripts/kernel/build.sh"
+# build steps to run (in order)
+BUILD_STEPS=("kernel" "rootfs" "bootloader" "image")
 
-# build u-boot
-# scripts/uboot/build.sh
+# are we skipping any build steps?
+# ex BUILD_SKIP_STEPS="uboot rootfs" ./build.sh
+BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS:-""}"
+SKIP_STEPS=()
+IFS=' ' read -r -a SKIP_STEPS <<< "${BUILD_SKIP_STEPS}"
 
-# build the rootfs
-# scripts/rootfs/build.sh
-
+# run each build step
+for STEP in "${BUILD_STEPS[@]}"; do
+  # if current step is NOT in KERNEL_BUILD_SKIP_STEPS
+  if ! [[ " ${SKIP_STEPS[*]} " =~ " ${STEP} " ]]; then
+    # run the step
+    echo "About to run ${TOP_DIR}/scripts/build-steps/${STEP}.sh"
+    . "${TOP_DIR}/scripts/build-steps/${STEP}.sh"
+  else
+    echo "Skipping build step: ${STEP}"
+  fi
+done
 
 echo "--- end build.sh ---"

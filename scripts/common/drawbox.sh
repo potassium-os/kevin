@@ -7,7 +7,7 @@ function box_out()
   readarray -t lines <<< "$@"
 
   # border character
-  c='#'
+  c='█'
   
   pad=0
   # get length of longest line, required for padding
@@ -17,7 +17,7 @@ function box_out()
   done
   
   # make a string to fill top/bottom
-  fill=$(printf %$((pad + 4))s "$c")
+  fill=$(printf %$((pad + 6))s "$c")
   fill=${fill// /$c}
   
   # print the text box
@@ -27,5 +27,5 @@ function box_out()
       printf "$c %-${pad}s $c\n" "$line"
   done
   
-  printf '%s\n' "$fill"
+  printf '%s\n\n' "$fill"
 }

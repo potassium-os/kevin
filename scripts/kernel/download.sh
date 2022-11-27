@@ -10,28 +10,30 @@ else
   set -eu
 fi
 
-# where this .sh file lives
-DIRNAME=$(dirname "$0")
-SCRIPT_DIR=$(cd "$DIRNAME" || exit; pwd)
+# If the script wasn't sourced we need to set DIRNAME and SCRIPT_DIR
+if ! (return 0 2>/dev/null)
+then
+  # where this .sh file lives
+  DIRNAME=$(dirname "$0")
+  SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
+fi
 
 DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
-DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit; pwd)
+DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
 . "${TOP_DIR}/scripts/common/defaults.sh"
 
-# draw box around string for pretty output
-. "${TOP_DIR}/scripts/common/drawbox.sh"
+# end boilerplate
 
+# check for git
 if ! command -v git &> /dev/null
 then
-    box_out "git is required for downloading kernel sources"
+    echo "git is required for downloading kernel sources"
     exit 1
 fi
-
-KERNEL_SRC_DIR="${TMP_DIR}/${TARGET}/kernel-${TARGET_KERNEL_TAG}"
 
 # if kernel src dir doesn't exist
 # or if CLEAN_KERNEL_DOWNLOAD=true
@@ -40,21 +42,31 @@ then
   # if it's CLEAN_KERNEL_DOWNLOAD, warn the user
   if $CLEAN_KERNEL_DOWNLOAD
   then
-    box_out "CLEAN_KERNEL_DOWNLOAD is set, running \"rm -rf ${TMP_DIR}/${TARGET}/kernel-${TARGET_KERNEL_TAG}\""
-    rm -rf "${TMP_DIR}/${TARGET}/kernel-${TARGET_KERNEL_TAG}"
+    echo "CLEAN_KERNEL_DOWNLOAD is set, running \"rm -rf ${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}\""
+    rm -rf "${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
   fi
 
-  box_out "${KERNEL_SRC_DIR} does not exist, downloading kernel"
+  echo "${KERNEL_SRC_DIR} does not exist, downloading kernel source"
 
   mkdir -p "${KERNEL_SRC_DIR}"
-  . "${TARGET_CONF_DIR}/kernel/build-hooks/pre-download.sh"
+
+  # clone the repo
   # --depth 1 implies --single-branch
   git clone \
     --depth 1 \
     --branch "${TARGET_KERNEL_TAG}" \
     "${TARGET_KERNEL_REPO}" \
     "${KERNEL_SRC_DIR}"
-  . "${TARGET_CONF_DIR}/kernel/build-hooks/post-download.sh"
+fi
+
+if $UPDATE_KERNEL_SOURCES
+then
+  echo "UPDATE_KERNEL_SOURCES is set, updating kernel source in ${KERNEL_SRC_DIR}"
+  cd "${KERNEL_SRC_DIR}" || exit 1
+
+  # pull in changes
+  # TODO: make this better
+  git pull
 fi
 
 echo "--- end scripts/kernel/download.sh ---"

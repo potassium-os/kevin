@@ -37,3 +37,11 @@ CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD:-false}"
 CLEAN_UBOOT_DOWNLOAD="${CLEAN_UBOOT_DOWNLOAD:-false}"
 
 ```
+
+Special care has been taken to ensure each component script can be run individually/manually
+
+```bash
+scripts/kernel/download.sh
+```
+
+etc
