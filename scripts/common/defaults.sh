@@ -51,6 +51,13 @@ mkdir -p "${SRC_DIR}"
 OUTPUT_DIR="${TMP_DIR}/dst"
 mkdir -p "${OUTPUT_DIR}"
 
+# where to copy deploy files to
+DEPLOY_DIR="${TMP_DIR}/deploy"
+mkdir -p "${DEPLOY_DIR}"
+
+ROOTFS_DIR="${DEPLOY_DIR}/rootfs"
+mkdir -p "${ROOTFS_DIR}"
+
 # do we rm -rf tmp/$TARGET/src/kernel before downloading?
 CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD:-false}"
 

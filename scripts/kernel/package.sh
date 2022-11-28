@@ -61,4 +61,6 @@ vbutil_kernel \
 dd if=/dev/zero of=vmlinux.kpart.pad bs=1M count=32
 dd if=vmlinux.kpart of=vmlinux.kpart.pad bs=32M conv=notrunc
 
+cp vmlinux.kpart.pad "${DEPLOY_DIR}/vmlinux.kpart"
+
 echo "--- end scripts/kernel/package.sh ---"

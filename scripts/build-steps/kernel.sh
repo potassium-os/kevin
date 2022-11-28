@@ -28,11 +28,11 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # end boilerplate
 
-echo "About to build kernel ${TARGET_KERNEL_TAG} for ${ARCH}"
+echo "About to build kernel ${TARGET_KERNEL_TAG} for ${TARGET_ARCH}"
 
 KERNEL_BUILD_STEPS=("download" "patch" "configure" "compile" "package")
 
-KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS:-""}"
+KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS:-\"\"}"
 
 SKIP_STEPS=()
 # specify as "download patch"
