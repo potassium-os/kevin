@@ -51,13 +51,16 @@ mkdir -p "${SRC_DIR}"
 OUTPUT_DIR="${TMP_DIR}/dst"
 mkdir -p "${OUTPUT_DIR}"
 
-# do we rm -rf tmp/kernel/$TARGET before downloading?
+# do we rm -rf tmp/$TARGET/src/kernel before downloading?
 CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD:-false}"
+
+# do we rm -rf tmp/$TARGET/dst/kernel before building?
+CLEAN_KERNEL_BUILD="${CLEAN_KERNEL_BUILD:-false}"
 
 # do we run "git pull" on the kernel repo dir?
 UPDATE_KERNEL_SOURCES="${UPDATE_KERNEL_SOURCES:-false}"
 
-# do we rm -rf tmp/uboot/$TARGET before downloading?
+# do we rm -rf tmp/$TARGET/src/uboot before downloading?
 CLEAN_UBOOT_DOWNLOAD="${CLEAN_UBOOT_DOWNLOAD:-false}"
 
 # load our target config
@@ -66,6 +69,7 @@ CLEAN_UBOOT_DOWNLOAD="${CLEAN_UBOOT_DOWNLOAD:-false}"
 # arch and cross_compile vars for make
 ARCH="${TARGET_ARCH}"
 CROSS_COMPILE="${TARGET_CROSS_COMPILE}"
+
 export ARCH="${TARGET_ARCH}"
 export CROSS_COMPILE="${TARGET_CROSS_COMPILE}"
 
