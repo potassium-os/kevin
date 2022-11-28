@@ -32,6 +32,6 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${ROOTFS_DIR}" || exit 1
 
 # debootstrap it
-sudo debootstrap "${TARGET_DISTRO_CODENAME}" "${ROOTFS_DIR}"
+sudo debootstrap --arch "${TARGET_ARCH}" "${TARGET_DISTRO_CODENAME}" "${ROOTFS_DIR}" "${TARGET_DISTRO_MIRROR}"
 
 echo "--- end scripts/rootfs/debootstrap.sh ---"

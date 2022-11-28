@@ -32,6 +32,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${KERNEL_SRC_DIR}" || exit 1
 
 # clean things up
+make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) mrproper
 make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) distclean
 
 # make defconfig
@@ -42,6 +43,8 @@ cd "${KERNEL_OUTPUT_DIR}" || exit 1
 
 # merge in our diffconfig
 "${KERNEL_SRC_DIR}/scripts/kconfig/merge_config.sh" "${KERNEL_OUTPUT_DIR}/.config" "${TARGET_CONF_DIR}/kernel/diffconfig"
+
+cp "${KERNEL_OUTPUT_DIR}/.config" "${KERNEL_OUTPUT_DIR}/.config.old"
 
 # fix up the actual config from our new .config
 make O="${KERNEL_OUTPUT_DIR}" oldconfig

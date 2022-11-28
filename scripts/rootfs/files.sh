@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "--- start scripts/kernel/compile.sh ---"
+echo "--- start scripts/rootfs/files.sh ---"
 
 # debug mode = set -x = loud
 DEBUG="${DEBUG:-false}"
@@ -28,17 +28,10 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # end boilerplate
 
-# cd to src dir
-cd "${KERNEL_SRC_DIR}" || exit 1
+# cd to rootfs dir
+cd "${ROOTFS_DIR}" || exit 1
 
-# make toast
-time make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) all
+# copy in files
+sudo cp -prv "${TARGET_CONFIG_DIR}/rootfs/files" "${ROOTFS_DIR}"
 
-# setup modules
-# first clean out old ones
-rm -rfv "${KERNEL_OUTPUT_DIR}/lib/modules/*"
-
-# then package up new ones
-make O="${KERNEL_OUTPUT_DIR}" INSTALL_MOD_PATH="${KERNEL_OUTPUT_DIR}" modules_install
-
-echo "--- end scripts/kernel/compile.sh ---"
+echo "--- end scripts/rootfs/files.sh ---"

@@ -2,6 +2,14 @@
 
 set -e
 
+# debug mode = set -x = loud
+DEBUG="${DEBUG:-false}"
+if $DEBUG; then
+  set -exu
+else
+  set -eu
+fi
+
 # If the script wasn't sourced we need to set DIRNAME and SCRIPT_DIR
 if ! (return 0 2>/dev/null)
 then
@@ -23,6 +31,7 @@ BUILDENV_TAG="${BUILDENV_TAG:-"latest"}"
 docker run --rm -it \
   --volume "$TOP_DIR:/opt/workdir:rw" \
   --env TARGET="${TARGET}" \
+  --env DEBUG="${DEBUG}" \
   --env CLEAN_BUILD="${CLEAN_BUILD}" \
   --env BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS}" \
   --env KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS}" \

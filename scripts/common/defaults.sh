@@ -58,6 +58,10 @@ mkdir -p "${DEPLOY_DIR}"
 ROOTFS_DIR="${DEPLOY_DIR}/rootfs"
 mkdir -p "${ROOTFS_DIR}"
 
+# clean the entire build at startup?
+# must be set to "cleanall" to do anything
+CLEAN_BUILD="${CLEAN_BUILD:-false}"
+
 # do we rm -rf tmp/$TARGET/src/kernel before downloading?
 CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD:-false}"
 

@@ -66,3 +66,7 @@ ROOTFS_BUILD_SKIP_STEPS=""
 ```bash
 ./scripts/container-exec.sh bash
 ```
+
+## Why "Potassium" ?
+
+kevin = K = potassium

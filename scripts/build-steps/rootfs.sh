@@ -30,7 +30,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 echo "About to build a ${TARGET_DISTRO} rootfs on ${TARGET_ARCH}"
 
-ROOTFS_BUILD_STEPS=("debootstrap")
+ROOTFS_BUILD_STEPS=("debootstrap" "files" "base-setup")
 
 SKIP_STEPS=()
 # specify as "download patch"
