@@ -32,8 +32,6 @@ echo "About to build kernel ${TARGET_KERNEL_TAG} for ${TARGET_ARCH}"
 
 KERNEL_BUILD_STEPS=("download" "patch" "configure" "compile" "package")
 
-KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS:-\"\"}"
-
 SKIP_STEPS=()
 # specify as "download patch"
 IFS=' ' read -r -a SKIP_STEPS <<< "${KERNEL_BUILD_SKIP_STEPS}"

@@ -1,9 +1,34 @@
 # potassium
-Full Linux on Kevin
-
-This repo defines targets and is a metarepo for other required things.
+Embedded Linux image build tooling
 
 At the moment it only supports the chromebook `kevin` and debian-like distros
+
+## What do I need?
+Any modern linux with docker installed \
+A decent amount of (fast) storage
+
+## How do I run a build?
+
+```bash
+./build-potassium.sh
+
+alias potassium="./scripts/container-exec.sh"
+
+# or run individual scripts
+potassium scripts/kernel/download.sh
+potassium scripts/rootfs/debootstrap.sh
+
+# you can skip build steps if they've already run / are still clean
+BUILD_SKIP_STEPS="kernel" potassium scripts/build.sh
+
+# or skip sub-steps of a build step
+KERNEL_BUILD_SKIP_STEPS="download patch" potassium scripts/build-steps/kernel.sh
+
+# start over - must be set to "cleanall"
+CLEAN_BUILD="cleanall" ./build-potassium.sh
+
+# etc
+```
 
 ## Envvars you need/want to set (with defaults):
 
@@ -16,32 +41,24 @@ TARGET="kevin"
 # is read fairly early in the build process.
 # You can specify things there instead of at runtime
 
-# do we rm -rf tmp/kernel/$TARGET before downloading?
-CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD:-false}"
-
-# do we rm -rf tmp/uboot/$TARGET before downloading?
-CLEAN_UBOOT_DOWNLOAD="${CLEAN_UBOOT_DOWNLOAD:-false}"
+# Dangerous!
+# When set to "cleanall" will rm -rf your entire tmpdir!
+CLEAN_BUILD=false
 
 # skip build steps
 # scripts/build.sh
-BUILD_SKIP_STEPS=""
+# BUILD_STEPS=("kernel" "rootfs" "bootloader" "image")
+# ex: we want to skip rootfs step alltogether
+BUILD_SKIP_STEPS="rootfs"
 
 # scripts/build-steps/kernel.sh
-KERNEL_BUILD_SKIP_STEPS=""
+# KERNEL_BUILD_STEPS=("download" "patch" "configure" "compile" "package")
+# ex: we want to skip kernel download/config but still want to compile/package
+KERNEL_BUILD_SKIP_STEPS="download patch configure"
 
 # scripts/build-steps/rootfs.sh
+# ROOTFS_BUILD_STEPS=("debootstrap")
 ROOTFS_BUILD_SKIP_STEPS=""
-```
-
-## How do I run a build?
-
-```bash
-./build-potassium.sh
-
-# or run individual scripts
-./scripts/container-exec.sh scripts/kernel/download.sh
-./scripts/container-exec.sh scripts/rootfs/debootstrap.sh
-# etc
 ```
 
 ## I want a shell in the build env container

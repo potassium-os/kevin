@@ -32,8 +32,6 @@ echo "About to build a ${TARGET_DISTRO} rootfs on ${TARGET_ARCH}"
 
 ROOTFS_BUILD_STEPS=("debootstrap")
 
-ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS:-\"\"}"
-
 SKIP_STEPS=()
 # specify as "download patch"
 IFS=' ' read -r -a SKIP_STEPS <<< "${ROOTFS_BUILD_SKIP_STEPS}"

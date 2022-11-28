@@ -31,12 +31,17 @@ BUILD_STEPS=("kernel" "rootfs" "bootloader" "image")
 
 # are we skipping any build steps?
 # ex BUILD_SKIP_STEPS="uboot rootfs" ./build.sh
-BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS:-""}"
 SKIP_STEPS=()
 IFS=' ' read -r -a SKIP_STEPS <<< "${BUILD_SKIP_STEPS}"
 
 MYUID=$(id)
 echo "Running as [ ${MYUID} ]"
+
+CLEAN_BUILD="${CLEAN_BUILD:-"false"}"
+if [[ "${CLEAN_BUILD}" == "cleanall" ]]; then
+  echo "--- CLEAN_BUILD is set, running \"rm -rfv ${TOP_DIR}/tmp\""
+  sudo rm -rfv "${TOP_DIR}/tmp"
+fi
 
 # run each build step
 for STEP in "${BUILD_STEPS[@]}"; do

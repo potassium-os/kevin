@@ -20,24 +20,12 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 BUILDENV_TAG="${BUILDENV_TAG:-"latest"}"
 
-# get a shell inside the build env container, with your workdir mounted in.
-function run_docker() {
-  TARGET="${TARGET:-"kevin"}"
-  BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS:-""}"
-  KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS:-""}"
-  ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS:-""}"
-
-  CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD:-false}"
-  CLEAN_UBOOT_DOWNLOAD="${CLEAN_UBOOT_DOWNLOAD:-false}"
-
-  docker run --rm -it \
-    --volume "$TOP_DIR:/opt/workdir:rw" \
-    --env TARGET="${TARGET}" \
-    --env BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS}" \
-    --env KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS}" \
-    --env ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS}" \
-    "ghcr.io/potassium-os/build-env-${TARGET_DISTRO}:${BUILDENV_TAG}" \
-      /bin/bash -c "${@}"
-}
-
-run_docker "${@}"
+docker run --rm -it \
+  --volume "$TOP_DIR:/opt/workdir:rw" \
+  --env TARGET="${TARGET}" \
+  --env CLEAN_BUILD="${CLEAN_BUILD}" \
+  --env BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS}" \
+  --env KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS}" \
+  --env ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS}" \
+  "ghcr.io/potassium-os/build-env-${TARGET_DISTRO}:${BUILDENV_TAG}" \
+    /bin/bash -c "${@}"

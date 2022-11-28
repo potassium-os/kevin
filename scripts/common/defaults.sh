@@ -70,6 +70,11 @@ UPDATE_KERNEL_SOURCES="${UPDATE_KERNEL_SOURCES:-false}"
 # do we rm -rf tmp/$TARGET/src/uboot before downloading?
 CLEAN_UBOOT_DOWNLOAD="${CLEAN_UBOOT_DOWNLOAD:-false}"
 
+# build steps to skip
+BUILD_SKIP_STEPS="${BUILD_SKIP_STEPS:-\"\"}"
+KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS:-\"\"}"
+ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS:-\"\"}"
+
 # load our target config
 . "${TARGET_CONF_DIR}/target.conf"
 
