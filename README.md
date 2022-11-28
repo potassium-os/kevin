@@ -1,7 +1,7 @@
 # potassium
 Embedded Linux image build tooling
 
-At the moment it only supports the chromebook `kevin` and debian-like distros
+At the moment it only supports the chromebook `kevin` and ubuntu
 
 ## What do I need?
 Any modern linux with docker installed \
@@ -35,10 +35,11 @@ CLEAN_BUILD="cleanall" ./build-potassium.sh
 ```bash
 # Your target
 # Currently only kevin and ubuntu kinetic are supported,
-# and it will remain the default
+#   and it will remain the default
+# We will switch to lunar when the docker image is available for build-env-ubuntu
 TARGET="kevin-kinetic"
 # Target config (ex targets/kevin-kinetic/target.conf)
-# is read fairly early in the build process.
+#   is read fairly early in the build process.
 # You can specify things there instead of at runtime
 
 # Dangerous!
@@ -65,6 +66,13 @@ ROOTFS_BUILD_SKIP_STEPS=""
 
 ```bash
 ./scripts/container-exec.sh bash
+```
+
+## It booted (yay!), but how do I login?
+
+```bash 
+# root password = root
+# change it in scripts/roots/base-setup.sh
 ```
 
 ## Why "Potassium" ?

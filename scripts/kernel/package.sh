@@ -69,6 +69,6 @@ BUILT_KERNEL_ID=$(ls "${KERNEL_OUTPUT_DIR}/lib/modules/")
 cp vmlinux.kpart.pad "${DEPLOY_DIR}/vmlinux-${BUILT_KERNEL_ID}.kpart"
 
 mkdir -p "${DEPLOY_DIR}/modules"
-cp -prv "${KERNEL_OUTPUT_DIR}/lib/modules/${BUILT_KERNEL_ID}" "${DEPLOY_DIR}/modules"
+cp -fprv "${KERNEL_OUTPUT_DIR}/lib/modules/${BUILT_KERNEL_ID}" "${DEPLOY_DIR}/modules"
 
 echo "--- end scripts/kernel/package.sh ---"

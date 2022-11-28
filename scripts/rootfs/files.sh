@@ -32,6 +32,6 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${ROOTFS_DIR}" || exit 1
 
 # copy in files
-sudo cp -prv "${TARGET_CONF_DIR}"/rootfs/files/* "${ROOTFS_DIR}"
+sudo /bin/cp --remove-destination -fprv "${TARGET_CONF_DIR}"/rootfs/files/* "${ROOTFS_DIR}"
 
 echo "--- end scripts/rootfs/files.sh ---"

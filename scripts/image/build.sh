@@ -30,7 +30,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 case "${TARGET_BOOTLOADER}" in
   "depthcharge")
-    . "${TOP_DIR}/scripts/iamge/build-depthcharge.sh"
+    . "${TOP_DIR}/scripts/image/build-depthcharge.sh"
   ;;
 
   *)

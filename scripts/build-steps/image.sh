@@ -30,7 +30,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 echo "About to build image ${TARGET_KERNEL_TAG} for ${TARGET_ARCH}"
 
-IMAGE_BUILD_STEPS=()
+IMAGE_BUILD_STEPS=("build")
 
 SKIP_STEPS=()
 # specify as "download patch"
