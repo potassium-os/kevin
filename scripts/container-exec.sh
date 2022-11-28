@@ -26,8 +26,6 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 # default variables
 . "${TOP_DIR}/scripts/common/defaults.sh"
 
-BUILDENV_TAG="${BUILDENV_TAG:-"latest"}"
-
 docker run \
   --rm \
   -it \
