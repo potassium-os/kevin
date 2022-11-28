@@ -18,7 +18,7 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
@@ -33,7 +33,6 @@ cd "${KERNEL_SRC_DIR}" || exit 1
 
 # clean things up
 make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) mrproper
-make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) distclean
 
 # make defconfig
 make O="${KERNEL_OUTPUT_DIR}" defconfig
@@ -45,6 +44,8 @@ cd "${KERNEL_OUTPUT_DIR}" || exit 1
 "${KERNEL_SRC_DIR}/scripts/kconfig/merge_config.sh" "${KERNEL_OUTPUT_DIR}/.config" "${TARGET_CONF_DIR}/kernel/diffconfig"
 
 cp "${KERNEL_OUTPUT_DIR}/.config" "${KERNEL_OUTPUT_DIR}/.config.old"
+
+touch "${KERNEL_SRC_DIR}/.scmversion"
 
 # fix up the actual config from our new .config
 make O="${KERNEL_OUTPUT_DIR}" oldconfig

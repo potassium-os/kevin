@@ -46,6 +46,8 @@ END
 
 echo "${LOGO}"
 
+BUILD_ENV=$(env)
+
 # tell the user what we're about to do
 box_out "
 Target Name:            ${TARGET_FRIENDLY_NAME}
@@ -55,12 +57,12 @@ Kernel Repo:            ${TARGET_KERNEL_REPO}
 Kernel Tag:             ${TARGET_KERNEL_TAG}
 Clean Kernel Download:  ${CLEAN_KERNEL_DOWNLOAD}
 
-U-Boot Repo:            ${TARGET_UBOOT_REPO}
-U-Boot Tag:             ${TARGET_UBOOT_TAG}
-Clean U-Boot Download:  ${CLEAN_UBOOT_DOWNLOAD}
-
 Target Distro:          ${TARGET_DISTRO}
 Target Distro Codename: ${TARGET_DISTRO_CODENAME}
+
+Build Env Vars:
+
+${BUILD_ENV}
 "
 
 . "${TOP_DIR}/scripts/container-exec.sh" "/opt/workdir/scripts/build.sh"

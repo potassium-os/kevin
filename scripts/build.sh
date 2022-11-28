@@ -18,7 +18,7 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
@@ -27,7 +27,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 . "${TOP_DIR}/scripts/common/defaults.sh"
 
 # build steps to run (in order)
-BUILD_STEPS=("kernel" "rootfs" "bootloader" "image")
+BUILD_STEPS=("kernel" "rootfs" "image")
 
 # are we skipping any build steps?
 # ex BUILD_SKIP_STEPS="uboot rootfs" ./build.sh

@@ -18,12 +18,15 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
+. "${TOP_DIR}/scripts/common/defaults.sh"
+
+# rootfs specific
 . "${TOP_DIR}/scripts/common/defaults.sh"
 
 # end boilerplate
@@ -38,30 +41,15 @@ sudo mount --rbind /sys  "${ROOTFS_DIR}/sys"
 sudo mount --rbind /run  "${ROOTFS_DIR}/run"
 
 # enter chroot
-sudo chroot "{ROOTFS_DIR}" /bin/bash << END
+sudo chroot "${ROOTFS_DIR}" /bin/bash << END
 set -eu
 echo "--- start scripts/rootfs/base-setup.sh chroot in ${ROOTFS_DIR} ---"
 
-# setup the hostname
-hostname kevin
-echo "kevin" > /etc/hostname
-
 # install some packages
-apt-get -yq update
-apt-get -yq install \
-  locales \
-  console-setup \
-  git \
-  curl \
-  wget \
-  network-manager \
-  u-boot-tools \
-  vboot-utils \
-  cgpt \
-  parted \
-  gdisk \
-  f2fs-tools \
-  libudev-dev
+apt-get -yq -o Acquire::ForceIPv4=true update
+apt-get -yq -o Acquire::ForceIPv4=true install \
+  ${TARGET_ROOTFS_PACKAGES} \
+  ${TARGET_ROOTFS_EXTRA_PACKAGES}
 
 # ???
 

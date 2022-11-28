@@ -18,7 +18,7 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 

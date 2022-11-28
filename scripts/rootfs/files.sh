@@ -18,7 +18,7 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
@@ -32,6 +32,6 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${ROOTFS_DIR}" || exit 1
 
 # copy in files
-sudo cp -prv "${TARGET_CONFIG_DIR}/rootfs/files" "${ROOTFS_DIR}"
+sudo cp -prv "${TARGET_CONF_DIR}"/rootfs/files/* "${ROOTFS_DIR}"
 
 echo "--- end scripts/rootfs/files.sh ---"

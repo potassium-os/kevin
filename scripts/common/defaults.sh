@@ -16,7 +16,7 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 
 # default TOP_DIR to SCRIPT_DIR
@@ -33,7 +33,7 @@ fi
 TARGETS_DIR="${TOP_DIR}/targets"
 
 # default target
-DEFAULT_TARGET="kevin"
+DEFAULT_TARGET="kevin-kinetic"
 TARGET="${TARGET:-$DEFAULT_TARGET}"
 
 # target config dir
@@ -58,6 +58,9 @@ mkdir -p "${DEPLOY_DIR}"
 ROOTFS_DIR="${DEPLOY_DIR}/rootfs"
 mkdir -p "${ROOTFS_DIR}"
 
+IMAGES_DIR="${DEPLOY_DIR}/images"
+mkdir -p "${IMAGES_DIR}"
+
 # clean the entire build at startup?
 # must be set to "cleanall" to do anything
 CLEAN_BUILD="${CLEAN_BUILD:-false}"
@@ -81,6 +84,7 @@ ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS:-\"\"}"
 
 # load our target config
 . "${TARGET_CONF_DIR}/target.conf"
+. "${TARGET_CONF_DIR}/rootfs/rootfs.conf"
 
 # arch and cross_compile vars for make
 ARCH="${TARGET_ARCH}"
@@ -90,4 +94,5 @@ export ARCH="${TARGET_ARCH}"
 export CROSS_COMPILE="${TARGET_CROSS_COMPILE}"
 
 KERNEL_SRC_DIR="${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
+
 KERNEL_OUTPUT_DIR="${OUTPUT_DIR}/kernel-${TARGET_KERNEL_TAG}"

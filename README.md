@@ -34,10 +34,10 @@ CLEAN_BUILD="cleanall" ./build-potassium.sh
 
 ```bash
 # Your target
-# Currently only kevin is supported,
+# Currently only kevin and ubuntu kinetic are supported,
 # and it will remain the default
-TARGET="kevin"
-# Target config (ex targets/kevin/target.conf)
+TARGET="kevin-kinetic"
+# Target config (ex targets/kevin-kinetic/target.conf)
 # is read fairly early in the build process.
 # You can specify things there instead of at runtime
 

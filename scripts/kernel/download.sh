@@ -18,7 +18,7 @@ then
   SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
 fi
 
-DEFAULT_TOP_DIR=`dirname "${SCRIPT_DIR}/../../."`
+DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
@@ -35,20 +35,19 @@ then
     exit 1
 fi
 
+# if it's CLEAN_KERNEL_DOWNLOAD, warn the user
+if $CLEAN_KERNEL_DOWNLOAD
+then
+  echo "CLEAN_KERNEL_DOWNLOAD is set, running \"rm -rf ${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}\""
+  rm -rf "${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
+fi
+
 # if kernel src dir doesn't exist
 # or if CLEAN_KERNEL_DOWNLOAD=true
-if ([[ ! -d "${KERNEL_SRC_DIR}" ]] && [[ ! -L "${KERNEL_SRC_DIR}" ]]) || $CLEAN_KERNEL_DOWNLOAD
-then
-  # if it's CLEAN_KERNEL_DOWNLOAD, warn the user
-  if $CLEAN_KERNEL_DOWNLOAD
-  then
-    echo "CLEAN_KERNEL_DOWNLOAD is set, running \"rm -rf ${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}\""
-    rm -rf "${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
-  fi
-
+if [[ ! -d "${KERNEL_SRC_DIR}" ]] && [[ ! -L "${KERNEL_SRC_DIR}" ]]; then
   echo "${KERNEL_SRC_DIR} does not exist, downloading kernel source"
 
-  mkdir -p "${KERNEL_SRC_DIR}"
+  rm -rf "${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
 
   # clone the repo
   # --depth 1 implies --single-branch
@@ -57,10 +56,11 @@ then
     --branch "${TARGET_KERNEL_TAG}" \
     "${TARGET_KERNEL_REPO}" \
     "${KERNEL_SRC_DIR}"
+  
+  cd "${KERNEL_SRC_DIR}" || exit 1
 fi
 
-if $UPDATE_KERNEL_SOURCES
-then
+if $UPDATE_KERNEL_SOURCES; then
   echo "UPDATE_KERNEL_SOURCES is set, updating kernel source in ${KERNEL_SRC_DIR}"
   cd "${KERNEL_SRC_DIR}" || exit 1
 
