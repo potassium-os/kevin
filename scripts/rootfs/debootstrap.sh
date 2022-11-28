@@ -31,10 +31,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 # cd to rootfs dir
 cd "${ROOTFS_DIR}" || exit 1
 
-# get a shell inside the build env container, with your workdir mounted in.
-docker run --rm -it \
-    --volume "$POTASSIUM_TOP_DIR:/opt/workdir:rw" \
-    "${TARGET_DEBOOTSTRAP_HELPER_CONTAINER}" \
-    /bin/bash -c "set -exu && debootstrap ${TARGET_DISTRO_CODENAME} ${ROOTFS_DIR}"
+# debootstrap it
+sudo debootstrap "${TARGET_DISTRO_CODENAME}" "${ROOTFS_DIR}"
 
 echo "--- end scripts/rootfs/debootstrap.sh ---"

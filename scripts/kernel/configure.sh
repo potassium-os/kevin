@@ -31,6 +31,9 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 # cd to src dir
 cd "${KERNEL_SRC_DIR}" || exit 1
 
+# clean things up
+make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) distclean
+
 # make defconfig
 make O="${KERNEL_OUTPUT_DIR}" defconfig
 

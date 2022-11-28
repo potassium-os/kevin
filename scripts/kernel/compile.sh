@@ -32,7 +32,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${KERNEL_SRC_DIR}" || exit 1
 
 # make toast
-time make O="${KERNEL_OUTPUT_DIR}" all
+time make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) all
 
 # setup modules
 make O="${KERNEL_OUTPUT_DIR}" INSTALL_MOD_PATH="${KERNEL_OUTPUT_DIR}" modules_install
