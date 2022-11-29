@@ -59,10 +59,6 @@ Clean Kernel Download:  ${CLEAN_KERNEL_DOWNLOAD}
 
 Target Distro:          ${TARGET_DISTRO}
 Target Distro Codename: ${TARGET_DISTRO_CODENAME}
-
-Build Env Vars:
-
-${BUILD_ENV}
 "
 
 . "${TOP_DIR}/scripts/container-exec.sh" "/opt/workdir/scripts/build.sh"

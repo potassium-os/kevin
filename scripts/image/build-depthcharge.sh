@@ -54,21 +54,22 @@ sudo losetup "${LOOP_DEVICE}" "${IMAGES_DIR}/${IMAGE_NAME}"
 # convert MB to B
 TARGET_IMAGE_SIZE_KBYTES=$(( TARGET_IMAGE_SIZE * 1024 ))
 
+TARGET_IMAGE_SIZE_SECTORS=$(( TARGET_IMAGE_SIZE_KBYTES * 2 ))
 
-# kevin: 32MiB (in KiB)
+# kevin: 65536 = 32MiB @ 512KiB sectors
 KERNEL_PARTITION_SIZE=$(( 65536 ))
 
-# kevin: 8MiB offset (in KiB)
+# kevin: 4MiB offset
 KERNEL_A_PARTITION_START=$(( 8192 ))
 
-# kevin: 73728 KiB offset
+# kevin: 73728 sector offset
 KERNEL_B_PARTITION_START=$(( KERNEL_A_PARTITION_START + KERNEL_PARTITION_SIZE ))
 
-# kevin: 139264 KiB offset
+# kevin: 139264 sector offset
 DATA_PARTITION_START=$(( KERNEL_B_PARTITION_START + KERNEL_PARTITION_SIZE ))
 
-# 2GiB: 1957888 KiB remaining space in image
-DATA_PARTITION_SIZE=$(( TARGET_IMAGE_SIZE_KBYTES - DATA_PARTITION_START ))
+# 2GiB: 1957888 sectors remaining space in image
+DATA_PARTITION_SIZE=$(( TARGET_IMAGE_SIZE_SECTORS - DATA_PARTITION_START ))
 
 # 4075487
 
@@ -128,12 +129,14 @@ sudo mount "${LOOP_DEVICE}p3" /mnt
 sudo cp --remove-destination -fprv "${ROOTFS_DIR}"/* /mnt/
 
 # cp in kernel modules
-sudo cp --remove-destination -fprv "${DEPLOY_DIR}/modules/${BUILT_KERNEL_ID}" /mnt/var/lib/modules/
+echo "Copying in kernel modules from ${DEPLOY_DIR}/modules/${BUILT_KERNEL_ID}"
+sudo mkdir -p /mnt/lib/modules || true
+sudo cp --remove-destination -fprv "${DEPLOY_DIR}/modules/${BUILT_KERNEL_ID}" "/mnt/lib/modules/${BUILT_KERNEL_ID}"
 
 # sync & unmount
-sudo sync "${LOOP_DEVICE}"
-
 sudo umount /mnt
+
+sudo sync "${LOOP_DEVICE}"
 
 sudo losetup -d "${LOOP_DEVICE}"
 # done?
