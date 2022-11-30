@@ -70,6 +70,16 @@ ROOTFS_BUILD_SKIP_STEPS=""
 
 ```bash
 ./scripts/container-exec.sh scripts/kernel/nconfig.sh
+# do your thing with nconfig
+# save it to "newconfig"
+
+# then diffconfig it like such
+./scripts/container-exec.sh bash
+
+# inside container
+cd tmp/kevin-lunar-cmdline/dst/kernel
+make defconfig
+source/scripts/diffconfig -m .config newconfig | tee targets/kevin-lunar-cmdline/kernel/diffconfig
 ```
 
 ## It booted (yay!), but how do I login?
