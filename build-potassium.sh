@@ -50,14 +50,13 @@ BUILD_ENV=$(env)
 
 # tell the user what we're about to do
 box_out "
-Target Name:            ${TARGET_FRIENDLY_NAME}
-Target ID:              ${TARGET_ID}
-
+Target Name:            ${TARGET_ID}
+Target Flavor:          ${TARGET_FLAVOR}
+Target Distro:          ${TARGET_DISTRO}
+Distro Codename:        ${TARGET_DISTRO_CODENAME}
 Rootfs Type:            ${TARGET_ROOT_FS}
-
 Kernel Repo:            ${TARGET_KERNEL_REPO}
 Kernel Tag:             ${TARGET_KERNEL_TAG}
-
 Target Distro:          ${TARGET_DISTRO}
 Target Distro Codename: ${TARGET_DISTRO_CODENAME}
 "
