@@ -35,7 +35,7 @@ fi
 TARGETS_DIR="${TOP_DIR}/targets"
 
 # default target
-DEFAULT_TARGET="kevin-lunar"
+DEFAULT_TARGET="kevin-lunar-cmdline"
 TARGET="${TARGET:-$DEFAULT_TARGET}"
 
 # target config dir
