@@ -1,4 +1,6 @@
 #!/bin/false
+# shellcheck shell=bash
+# shellcheck disable=SC2034
 
 # debug mode = set -x = loud
 DEBUG="${DEBUG:-false}"
@@ -33,7 +35,7 @@ fi
 TARGETS_DIR="${TOP_DIR}/targets"
 
 # default target
-DEFAULT_TARGET="kevin-kinetic"
+DEFAULT_TARGET="kevin-lunar"
 TARGET="${TARGET:-$DEFAULT_TARGET}"
 
 # target config dir
@@ -51,13 +53,22 @@ mkdir -p "${SRC_DIR}"
 OUTPUT_DIR="${TMP_DIR}/dst"
 mkdir -p "${OUTPUT_DIR}"
 
+# where we build the rootfs
+ROOTFS_DIR="${OUTPUT_DIR}/rootfs"
+mkdir -p "${ROOTFS_DIR}"
+
+# note that we do NOT create the source dir here
+# see scripts/kernel/download.sh
+KERNEL_SRC_DIR="${SRC_DIR}/kernel"
+
+KERNEL_OUTPUT_DIR="${OUTPUT_DIR}/kernel"
+mkdir -p "${KERNEL_OUTPUT_DIR}"
+
 # where to copy deploy files to
 DEPLOY_DIR="${TMP_DIR}/deploy"
 mkdir -p "${DEPLOY_DIR}"
 
-ROOTFS_DIR="${DEPLOY_DIR}/rootfs"
-mkdir -p "${ROOTFS_DIR}"
-
+# where to store output images
 IMAGES_DIR="${DEPLOY_DIR}/images"
 mkdir -p "${IMAGES_DIR}"
 
@@ -83,17 +94,7 @@ KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS:-\"\"}"
 ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS:-\"\"}"
 IMAGE_BUILD_SKIP_STEPS="${IMAGE_BUILD_SKIP_STEPS:-\"\"}"
 
+#
 # load our target config
 . "${TARGET_CONF_DIR}/target.conf"
-. "${TARGET_CONF_DIR}/rootfs/rootfs.conf"
 
-# arch and cross_compile vars for make
-ARCH="${TARGET_ARCH}"
-CROSS_COMPILE="${TARGET_CROSS_COMPILE}"
-
-export ARCH="${TARGET_ARCH}"
-export CROSS_COMPILE="${TARGET_CROSS_COMPILE}"
-
-KERNEL_SRC_DIR="${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
-
-KERNEL_OUTPUT_DIR="${OUTPUT_DIR}/kernel-${TARGET_KERNEL_TAG}"

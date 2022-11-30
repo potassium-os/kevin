@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# this file isn't a build step
+# it's meant to be used interactivly
+
 echo "--- start scripts/kernel/nconfig.sh ---"
 
 # debug mode = set -x = loud
@@ -24,7 +27,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 

@@ -24,7 +24,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
@@ -38,8 +38,8 @@ fi
 # if it's CLEAN_KERNEL_DOWNLOAD, warn the user
 if $CLEAN_KERNEL_DOWNLOAD
 then
-  echo "CLEAN_KERNEL_DOWNLOAD is set, running \"rm -rf ${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}\""
-  rm -rf "${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
+  echo "CLEAN_KERNEL_DOWNLOAD is set, running \"rm -rf ${KERNEL_SRC_DIR}\""
+  rm -rf "${KERNEL_SRC_DIR}"
 fi
 
 # if kernel src dir doesn't exist
@@ -47,7 +47,9 @@ fi
 if [[ ! -d "${KERNEL_SRC_DIR}" ]] && [[ ! -L "${KERNEL_SRC_DIR}" ]]; then
   echo "${KERNEL_SRC_DIR} does not exist, downloading kernel source"
 
-  rm -rf "${SRC_DIR}/kernel-${TARGET_KERNEL_TAG}"
+  rm -rf "${KERNEL_SRC_DIR}"
+
+  mkdir -p "${KERNEL_SRC_DIR}"
 
   # clone the repo
   # --depth 1 implies --single-branch

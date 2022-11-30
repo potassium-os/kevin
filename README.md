@@ -1,7 +1,7 @@
 # potassium
 Embedded Linux image build tooling
 
-At the moment it only supports the chromebook `kevin` and ubuntu
+At the moment it only supports the chromebook `kevin` and ubuntu LUNAR LOBSTER
 
 ## What do I need?
 Any modern linux with docker installed \
@@ -12,9 +12,8 @@ A decent amount of (fast) storage
 ```bash
 ./build-potassium.sh
 
-alias potassium="./scripts/container-exec.sh"
-
 # or run individual scripts
+alias potassium="./scripts/container-exec.sh"
 potassium scripts/kernel/download.sh
 potassium scripts/rootfs/debootstrap.sh
 
@@ -34,12 +33,11 @@ CLEAN_BUILD="cleanall" ./build-potassium.sh
 
 ```bash
 # Your target
-# Currently only kevin and ubuntu kinetic are supported,
+# Currently only kevin and ubuntu lunar are supported,
 #   and it will remain the default
-# We will switch to lunar when the docker image is available for build-env-ubuntu
-TARGET="kevin-kinetic"
-# Target config (ex targets/kevin-kinetic/target.conf)
-#   is read fairly early in the build process.
+TARGET="kevin-lunar"
+# Target config (ex targets/kevin-lunar/target.conf)
+#   is (re)read early in the execution of each build step
 # You can specify things there instead of at runtime
 
 # Dangerous!
@@ -68,12 +66,27 @@ ROOTFS_BUILD_SKIP_STEPS=""
 ./scripts/container-exec.sh bash
 ```
 
+## How to I menuconfig the kernel?
+
+```bash
+./scripts/container-exec.sh scripts/kernel/nconfig.sh
+```
+
 ## It booted (yay!), but how do I login?
 
 ```bash 
-# root password = root
+# users root, ubuntu
+# password potassium
 # change it in scripts/roots/base-setup.sh
 ```
+
+## I want a DE
+
+```bash
+# wayland recommended
+apt install ubuntu-desktop
+```
+
 
 ## Why "Potassium" ?
 

@@ -24,7 +24,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
@@ -32,11 +32,12 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${KERNEL_SRC_DIR}" || exit 1
 
 # make toast
-time make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+0)) all
+time make O="${KERNEL_OUTPUT_DIR}" -j$((`nproc`+2)) all
 
 # setup modules
 # first clean out old ones
-rm -rfv "${KERNEL_OUTPUT_DIR}/lib/modules/*"
+rm -rfv "${KERNEL_OUTPUT_DIR}/lib/modules"
+mkdir -p "${KERNEL_OUTPUT_DIR}/lib/modules"
 
 # then package up new ones
 make O="${KERNEL_OUTPUT_DIR}" INSTALL_MOD_PATH="${KERNEL_OUTPUT_DIR}" modules_install

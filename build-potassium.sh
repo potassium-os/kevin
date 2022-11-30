@@ -18,7 +18,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # draw box around string for pretty output
 . "${TOP_DIR}/scripts/common/drawbox.sh"
@@ -53,12 +53,14 @@ box_out "
 Target Name:            ${TARGET_FRIENDLY_NAME}
 Target ID:              ${TARGET_ID}
 
+Rootfs Type:            ${TARGET_ROOT_FS}
+
 Kernel Repo:            ${TARGET_KERNEL_REPO}
 Kernel Tag:             ${TARGET_KERNEL_TAG}
-Clean Kernel Download:  ${CLEAN_KERNEL_DOWNLOAD}
 
 Target Distro:          ${TARGET_DISTRO}
 Target Distro Codename: ${TARGET_DISTRO_CODENAME}
 "
 
-. "${TOP_DIR}/scripts/container-exec.sh" "/opt/workdir/scripts/build.sh"
+# make the toast
+time . "${TOP_DIR}/scripts/container-exec.sh" "/opt/workdir/scripts/build.sh"

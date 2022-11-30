@@ -24,7 +24,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
@@ -32,7 +32,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${KERNEL_SRC_DIR}" || exit 1
 
 # apply patches
-for x in $(ls ${TARGET_CONF_DIR}/kernel/patches/*.patch); do
+for x in "${TARGET_CONF_DIR}"/kernel/patches/*.patch; do
 	echo "Applying $x"
 	patch -p1 --forward < $x || true
 done

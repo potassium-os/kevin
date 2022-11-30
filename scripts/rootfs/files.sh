@@ -24,7 +24,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
@@ -33,5 +33,10 @@ cd "${ROOTFS_DIR}" || exit 1
 
 # copy in files
 sudo /bin/cp --remove-destination -fprv "${TARGET_CONF_DIR}"/rootfs/files/* "${ROOTFS_DIR}"
+
+# cp in kernel modules
+echo "Copying in kernel modules from ${DEPLOY_DIR}/modules/"
+sudo mkdir -p /mnt/lib/modules || true
+sudo tar xvf "${DEPLOY_DIR}/kmod.tar" -C /mnt
 
 echo "--- end scripts/rootfs/files.sh ---"

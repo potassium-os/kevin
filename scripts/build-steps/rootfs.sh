@@ -24,13 +24,13 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
 echo "About to build a ${TARGET_DISTRO} rootfs on ${TARGET_ARCH}"
 
-ROOTFS_BUILD_STEPS=("debootstrap" "files" "base-setup")
+ROOTFS_BUILD_STEPS=("debootstrap" "files" "base-setup" "package")
 
 SKIP_STEPS=()
 # specify as "download patch"

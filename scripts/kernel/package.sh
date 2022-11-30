@@ -25,7 +25,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
 # default variables
-. "${TOP_DIR}/scripts/common/defaults.sh"
+. "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
@@ -64,11 +64,10 @@ vbutil_kernel \
 dd if=/dev/zero of=vmlinux.kpart.pad bs=1M count=32
 dd if=vmlinux.kpart of=vmlinux.kpart.pad bs=32M conv=notrunc
 
-BUILT_KERNEL_ID=$(ls "${KERNEL_OUTPUT_DIR}/lib/modules/")
-
-cp vmlinux.kpart.pad "${DEPLOY_DIR}/vmlinux-${BUILT_KERNEL_ID}.kpart"
+cp vmlinux.kpart.pad "${DEPLOY_DIR}/vmlinux.kpart"
 
 mkdir -p "${DEPLOY_DIR}/modules"
-cp -fprv "${KERNEL_OUTPUT_DIR}/lib/modules/${BUILT_KERNEL_ID}" "${DEPLOY_DIR}/modules"
+cd "${KERNEL_OUTPUT_DIR}"
+tar cvf "${DEPLOY_DIR}/kmod.tar" "${KERNEL_OUTPUT_DIR}/lib/modules"
 
 echo "--- end scripts/kernel/package.sh ---"
