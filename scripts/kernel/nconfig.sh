@@ -35,6 +35,6 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 cd "${KERNEL_SRC_DIR}" || exit 1
 
 # new menuconfig 
-make O="${KERNEL_OUTPUT_DIR}" nconfig
+make ARCH="${TARGET_ARCH}" O="${KERNEL_OUTPUT_DIR}" nconfig
 
 echo "--- end scripts/kernel/nconfig.sh ---"

@@ -25,15 +25,22 @@ DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../../.")
 DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
+cd "${TOP_DIR}" || exit 1
+
 # load common functions
 # default variables
 . "${TOP_DIR}/scripts/common/config.sh"
 
 # end boilerplate
 
+
+#
+# set root password to potassium
+echo "setting password"
+sh -c 'echo "root:potassium" | chpasswd' || exit 1
+
 #
 # set hostname
-hostname kevin
 echo kevin | tee /etc/hostname
 
 #
@@ -81,27 +88,15 @@ dpkg-reconfigure -f noninteractive locales
 rm -rf /etc/preseed
 
 #
-# install selected packages
-apt-get -yq install "${TARGET_ROOTFS_PACKAGES}"
+# install extra packages
 apt-get -yq install "${TARGET_ROOTFS_EXTRA_PACKAGES}"
 
 #
 # install depthcharge-tools from src
-cd /root
-git clone --depth 1 --branch "${TARGET_ROOTFS_DEPTHCHARGE_TOOLS_TAG}" "${TARGET_ROOTFS_DEPTHCHARGE_REPO}" /root/depthcharge-tools
-pip3 install --user -e /root/depthcharge-tools
-rm -rf /root/depthcharge-tools
+pip3 install depthcharge-tools
 # add python3 to root PATH
 # We want this to output $PATH without expansion
 # shellcheck disable=SC2016
-echo 'PATH="$(python3 -m site --user-base)/bin:\${PATH}"' >> /root/.profile
-
-#
-# set root password to potassium
-sh -c 'echo root:potassium | chpasswd'
-
-#
-# run our target hook
-. "${TARGET_CONF_DIR}/rootfs/scripts/base-setup-append.sh"
+echo 'PATH="/usr/lib/python3/dist-packages:${PATH}"' >> /root/.profile
 
 echo "--- end scripts/rootfs/chroot/base-setup.sh ---"

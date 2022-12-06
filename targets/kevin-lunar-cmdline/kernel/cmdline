@@ -1,1 +1,1 @@
-console=tty1 root=PARTUUID=%U/PARTNROFF=2 rootwait rw mitigations=off isolcpus=0-3 nohz_full=0-3
+console=tty1 root=PARTUUID=%U/PARTNROFF=2 rootwait rw mitigations=off

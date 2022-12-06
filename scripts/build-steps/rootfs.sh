@@ -30,7 +30,7 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 echo "About to build a ${TARGET_DISTRO} rootfs on ${TARGET_ARCH}"
 
-ROOTFS_BUILD_STEPS=("debootstrap" "files" "base-setup" "package")
+ROOTFS_BUILD_STEPS=("debootstrap" "files" "chroot" "package")
 
 SKIP_STEPS=()
 # specify as "download patch"
@@ -42,7 +42,7 @@ for STEP in "${ROOTFS_BUILD_STEPS[@]}"; do
   if ! [[ " ${SKIP_STEPS[*]} " =~ " ${STEP} " ]]; then
     # run the step
     echo "About to run ${TOP_DIR}/scripts/rootfs/${STEP}.sh"
-    . "${TOP_DIR}/scripts/rootfs/${STEP}.sh"
+    . "${TOP_DIR}/scripts/rootfs/${STEP}.sh" || exit
   else
     echo "Skipping rootfs build step: ${STEP}"
   fi

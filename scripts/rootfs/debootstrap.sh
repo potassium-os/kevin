@@ -15,11 +15,11 @@ if ! (return 0 2>/dev/null)
 then
   # where this .sh file lives
   DIRNAME=$(dirname "$0")
-  SCRIPT_DIR=$(cd "$DIRNAME" || exit 1; pwd)
+  SCRIPT_DIR=$(cd "${DIRNAME}" || exit 1; pwd)
 fi
 
 DEFAULT_TOP_DIR=$(dirname "${SCRIPT_DIR}/../../.")
-DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
+DEFAULT_TOP_DIR=$(cd "${DEFAULT_TOP_DIR}" || exit 1; pwd)
 TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # load common functions
@@ -34,6 +34,13 @@ sudo rm -rfv "${ROOTFS_DIR}"
 mkdir -p "${ROOTFS_DIR}"
 
 # debootstrap it
-sudo debootstrap --arch "${TARGET_ARCH}" "${TARGET_DISTRO_CODENAME}" "${ROOTFS_DIR}" "${TARGET_DISTRO_MIRROR}"
+echo "Running debootstrap for ${TARGET_DISTRO_CODENAME} into ${ROOTFS_DIR}"
+sudo debootstrap \
+  --arch="${TARGET_ARCH}" \
+  --include="${TARGET_ROOTFS_PACKAGES}" \
+  --components="${TARGET_DEBOOTSTRAP_COMPONENTS}" \
+  "${TARGET_DISTRO_CODENAME}" \
+  "${ROOTFS_DIR}" \
+  "${TARGET_DISTRO_MIRROR}"
 
 echo "--- end scripts/rootfs/debootstrap.sh ---"

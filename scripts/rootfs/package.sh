@@ -28,45 +28,77 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 # end boilerplate
 
-cd "${DEPLOY_DIR}" || exit 1
-
-function rootfs_ext4() {
-  dd if=/dev/zero of="${DEPLOY_DIR}/rootfs.raw" bs=512 count="${DATA_PARTITION_SIZE}" status=progress conv=fsync
-
-  # losetup
-  LOOP_DEVICE=$(losetup -f)
-  sudo losetup "${LOOP_DEVICE}" "${DEPLOY_DIR}/rootfs.raw"
-
-  # make the filesystem
-  sudo mkfs.ext4 "${LOOP_DEVICE}"
-
-  # mount rootfs
-  sudo mount "${LOOP_DEVICE}" /mnt
-
-  # tar in rootfs
-  sudo tar xvf "${DEPLOY_DIR}/rootfs.tar" -C /mnt
-
-  # tar in kernel modules
-  echo "Copying in kernel modules from ${DEPLOY_DIR}/modules"
-  sudo mkdir -p /mnt/lib/modules || true
-  sudo tar xvf "${DEPLOY_DIR}/kmod.tar" -C /mnt
-
-  # sync & unmount
-  sudo umount /mnt
-  sudo sync "${LOOP_DEVICE}"
-  sudo losetup -d "${LOOP_DEVICE}"
-}
-
+cd "${ROOTFS_DIR}" || exit 1
 
 # tar rootfs to tar.gz in deploy dir
-sudo rm -f "${DEPLOY_DIR}/rootfs.tar"
-sudo tar cvf "${DEPLOY_DIR}/rootfs.tar" "${ROOTFS_DIR}"
+sudo rm -vf "${DEPLOY_DIR}/rootfs.tar"
 
+cd "${ROOTFS_DIR}" || exit 1
+sudo bsdtar \
+  --create \
+  --preserve-permissions \
+  --numeric-owner \
+  --directory="${ROOTFS_DIR}" \
+  --exclude "./dev" \
+  --exclude "./proc" \
+  --exclude "./sys" \
+  --exclude "./run" \
+  --exclude "./opt/workdir/potassium" \
+  --verbose \
+  --file="${DEPLOY_DIR}/rootfs.tar" .
+
+# create the root filesystem image
+rm -vf "${DEPLOY_DIR}/rootfs.${TARGET_ROOT_FS}"
+dd \
+  bs=512 \
+  if=/dev/zero \
+  of="${DEPLOY_DIR}/rootfs.${TARGET_ROOT_FS}" \
+  count="$(( DATA_PARTITION_SIZE - 512 ))" \
+  status=progress \
+  conv=fsync
+
+# setup the rootfs
 case "${TARGET_ROOT_FS}" in
   "ext4")
-    rootfs_ext4
+    # losetup the image
+    LOOP_DEVICE=$(sudo losetup -f)
+    sudo losetup "${LOOP_DEVICE}" "${DEPLOY_DIR}/rootfs.${TARGET_ROOT_FS}"
+    sudo mkfs.ext4 "${LOOP_DEVICE}"
+
+    # mount the image to /mnt
+    sudo mount "${LOOP_DEVICE}" /mnt || exit
+    cd /mnt || exit
+
+    # untar in rootfs
+    sudo bsdtar \
+      --extract \
+      --verbose \
+      --preserve-permissions \
+      --same-owner \
+      --numeric-owner \
+      --directory="/mnt" \
+      --file="${DEPLOY_DIR}/rootfs.tar" \
+    || exit
+
+    # ensure our modules dir is created
+    sudo mkdir -p /mnt/usr/lib/modules
+    # untar in kernel modules
+    sudo bsdtar \
+      --extract \
+      --verbose \
+      --preserve-permissions \
+      --same-owner \
+      --numeric-owner \
+      --directory="/mnt/usr/lib" \
+      --file="${DEPLOY_DIR}/kmod.tar" \
+    || exit
+
+    # get out of /mnt and umount it
+    cd "${DEPLOY_DIR}" || exit
+    sudo umount /mnt
   ;;
 
+  # TODO: squashfs
   *)
     echo "Unknown TARGET_ROOT_FS"
     exit 1

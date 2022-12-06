@@ -38,7 +38,16 @@ cd "${KERNEL_SRC_DIR}" || exit 1
 cd "${KERNEL_OUTPUT_DIR}" || exit 1
 
 # cleanup old objects
-rm -vf kernel.its cmdline c_linux.lz4 vmlinux.uimg bootloader.bin vmlinux.kpart vmlinux.kpart.pad
+rm -vf \
+  kernel.its \
+  cmdline \
+  c_linux.lz4 \
+  vmlinux.uimg \
+  bootloader.bin \
+  vmlinux.kpart \
+  vmlinux.kpart.pad \
+  "${DEPLOY_DIR}/vmlinux.kpart" \
+  "${DEPLOY_DIR}/kmod.tar"
 
 cp "${TARGET_CONF_DIR}/kernel/${TARGET_ARCH}.kernel.its" kernel.its
 cp "${TARGET_CONF_DIR}/kernel/cmdline" cmdline
@@ -48,7 +57,7 @@ lz4 -z -f "arch/${TARGET_ARCH}/boot/Image" c_linux.lz4
 mkimage -D "-I dts -O dtb -p 2048" -f kernel.its vmlinux.uimg
 
 # make an empty file for bootloader stub
-dd if=/dev/zero of=bootloader.bin bs=512 count=1
+dd if=/dev/zero of=bootloader.bin bs=512 count=1 conv=fsync
 
 # package/sign the kernel
 vbutil_kernel \
@@ -60,14 +69,16 @@ vbutil_kernel \
 	--config "${TARGET_CONF_DIR}/kernel/cmdline" \
 	--bootloader bootloader.bin
 
-# make the actual partition raw we'll dd into the image
-dd if=/dev/zero of=vmlinux.kpart.pad bs=1M count=32
-dd if=vmlinux.kpart of=vmlinux.kpart.pad bs=32M conv=notrunc
+cp vmlinux.kpart "${DEPLOY_DIR}/vmlinux.kpart"
 
-cp vmlinux.kpart.pad "${DEPLOY_DIR}/vmlinux.kpart"
-
-mkdir -p "${DEPLOY_DIR}/modules"
-cd "${KERNEL_OUTPUT_DIR}"
-tar cvf "${DEPLOY_DIR}/kmod.tar" "${KERNEL_OUTPUT_DIR}/lib/modules"
+cd "${KERNEL_OUTPUT_DIR}/lib" || exit 1
+sudo bsdtar \
+  --create \
+  --preserve-permissions \
+  --numeric-owner \
+  --directory="${KERNEL_OUTPUT_DIR}/lib" \
+  --verbose \
+  --file="${DEPLOY_DIR}/kmod.tar" \
+	"./modules"
 
 echo "--- end scripts/kernel/package.sh ---"

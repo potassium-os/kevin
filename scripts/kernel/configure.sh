@@ -43,11 +43,7 @@ cd "${KERNEL_OUTPUT_DIR}" || exit 1
 # merge in our diffconfig
 "${KERNEL_SRC_DIR}/scripts/kconfig/merge_config.sh" "${KERNEL_OUTPUT_DIR}/.config" "${TARGET_CONF_DIR}/kernel/diffconfig"
 
-cp "${KERNEL_OUTPUT_DIR}/.config" "${KERNEL_OUTPUT_DIR}/.config.old"
-
+# keep -dirty or + from being appended to our version string
 touch "${KERNEL_SRC_DIR}/.scmversion"
-
-# fix up the actual config from our new .config
-make O="${KERNEL_OUTPUT_DIR}" oldconfig
 
 echo "--- end scripts/kernel/configure.sh ---"

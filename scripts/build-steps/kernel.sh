@@ -42,7 +42,7 @@ for STEP in "${KERNEL_BUILD_STEPS[@]}"; do
   if ! [[ " ${SKIP_STEPS[*]} " =~ " ${STEP} " ]]; then
     # run the step
     echo "About to run ${TOP_DIR}/scripts/kernel/${STEP}.sh"
-    . "${TOP_DIR}/scripts/kernel/${STEP}.sh"
+    . "${TOP_DIR}/scripts/kernel/${STEP}.sh" || exit
   else
     echo "Skipping kernel build step: ${STEP}"
   fi

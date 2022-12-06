@@ -42,7 +42,7 @@ for STEP in "${IMAGE_BUILD_STEPS[@]}"; do
   if ! [[ " ${SKIP_STEPS[*]} " =~ " ${STEP} " ]]; then
     # run the step
     echo "About to run ${TOP_DIR}/scripts/image/${STEP}.sh"
-    . "${TOP_DIR}/scripts/image/${STEP}.sh"
+    . "${TOP_DIR}/scripts/image/${STEP}.sh" || exit
   else
     echo "Skipping image build step: ${STEP}"
   fi
