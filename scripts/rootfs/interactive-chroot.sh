@@ -39,7 +39,7 @@ sudo mount --bind /dev  "${ROOTFS_DIR}/dev"
 sudo mount --bind /proc "${ROOTFS_DIR}/proc"
 sudo mount --bind /sys  "${ROOTFS_DIR}/sys"
 sudo mount --bind /run  "${ROOTFS_DIR}/run"
-sudo mount --bind "${TOPDIR}" "${ROOTFS_DIR}/potassium"
+sudo mount --bind -o ro "${TOPDIR}/scripts" "${ROOTFS_DIR}/opt/workdir"
 
 # enter chroot
 sudo chroot "${ROOTFS_DIR}" /bin/bash --login
@@ -49,6 +49,6 @@ sudo umount -f "${ROOTFS_DIR}/dev"  || lsof "${ROOTFS_DIR}/dev"
 sudo umount -f "${ROOTFS_DIR}/proc" || lsof "${ROOTFS_DIR}/proc"
 sudo umount -f "${ROOTFS_DIR}/sys"  || lsof "${ROOTFS_DIR}/sys"
 sudo umount -f "${ROOTFS_DIR}/run"  || lsof "${ROOTFS_DIR}/run"
-sudo umount -f "${ROOTFS_DIR}/potassium" || lsof "${ROOTFS_DIR}/potassium"
+sudo umount -f "${ROOTFS_DIR}/opt/workdir" || lsof "${ROOTFS_DIR}/opt/workdir"
 
 echo "--- end scripts/rootfs/interactive-chroot.sh ---"

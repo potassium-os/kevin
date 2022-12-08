@@ -34,7 +34,7 @@ podman run \
   --net=host \
   --cap-add=SYS_ADMIN \
   --security-opt apparmor:unconfined \
-  --volume "$TOP_DIR:/opt/workdir:rw" \
+  --volume "$TOP_DIR:/opt/workdir:rw,dev,exec,suid" \
   --env TARGET="${TARGET}" \
   --env DEBUG="${DEBUG}" \
   --env CLEAN_BUILD="${CLEAN_BUILD}" \

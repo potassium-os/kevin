@@ -39,7 +39,7 @@ sudo mount --bind /dev         "${ROOTFS_DIR}/dev"
 sudo mount --bind /proc        "${ROOTFS_DIR}/proc"
 sudo mount --bind /sys         "${ROOTFS_DIR}/sys"
 sudo mount --bind /run         "${ROOTFS_DIR}/run"
-sudo mount --bind "${TOP_DIR}/scripts" "${ROOTFS_DIR}/opt/workdir/scripts"
+sudo mount --bind -o ro "${TOP_DIR}/scripts" "${ROOTFS_DIR}/opt/workdir/scripts"
 
 DEFAULT_TARGET_ROOTFS_CHROOT_BUILD_STEPS="base-setup"
 ROOTFS_CHROOT_BUILD_STEPS="${ROOTFS_CHROOT_BUILD_STEPS:-$DEFAULT_TARGET_ROOTFS_CHROOT_BUILD_STEPS}"
