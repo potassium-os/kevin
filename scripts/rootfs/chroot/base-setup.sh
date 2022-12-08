@@ -91,12 +91,4 @@ rm -rf /etc/preseed
 # install extra packages
 apt-get -yq install "${TARGET_ROOTFS_EXTRA_PACKAGES}"
 
-#
-# install depthcharge-tools from src
-pip3 install depthcharge-tools
-# add python3 to root PATH
-# We want this to output $PATH without expansion
-# shellcheck disable=SC2016
-echo 'PATH="/usr/lib/python3/dist-packages:${PATH}"' >> /root/.profile
-
 echo "--- end scripts/rootfs/chroot/base-setup.sh ---"

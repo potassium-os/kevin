@@ -39,9 +39,11 @@ sudo mount --bind /dev         "${ROOTFS_DIR}/dev"
 sudo mount --bind /proc        "${ROOTFS_DIR}/proc"
 sudo mount --bind /sys         "${ROOTFS_DIR}/sys"
 sudo mount --bind /run         "${ROOTFS_DIR}/run"
-sudo mount --bind "${TOP_DIR}" "${ROOTFS_DIR}/opt/workdir"
+sudo mount --bind "${TOP_DIR}/scripts" "${ROOTFS_DIR}/opt/workdir/scripts"
 
-ROOTFS_CHROOT_BUILD_STEPS=("base-setup")
+DEFAULT_TARGET_ROOTFS_CHROOT_BUILD_STEPS="base-setup"
+ROOTFS_CHROOT_BUILD_STEPS="${ROOTFS_CHROOT_BUILD_STEPS:-$DEFAULT_TARGET_ROOTFS_CHROOT_BUILD_STEPS}"
+IFS=' ' read -r -a BUILD_STEPS <<< "${ROOTFS_CHROOT_BUILD_STEPS}"
 
 SKIP_STEPS=()
 # specify as "base-setup foo bar"
@@ -49,7 +51,7 @@ IFS=' ' read -r -a SKIP_STEPS <<< "${ROOTFS_CHROOT_BUILD_SKIP_STEPS}"
 
 # run each build step
 # enter chroot
-for STEP in "${ROOTFS_CHROOT_BUILD_STEPS[@]}"; do
+for STEP in "${BUILD_STEPS[@]}"; do
   # if current step is in ROOTFS_CHROOT_BUILD_SKIP_STEPS
   if ! [[ " ${SKIP_STEPS[*]} " =~ " ${STEP} " ]]; then
     # run the step

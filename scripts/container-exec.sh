@@ -26,9 +26,10 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 # default variables
 . "${TOP_DIR}/scripts/common/config.sh"
 
-docker run \
+podman run \
   --rm \
   -it \
+  --userns=keep-id \
   --privileged \
   --net=host \
   --cap-add=SYS_ADMIN \
@@ -41,5 +42,6 @@ docker run \
   --env KERNEL_BUILD_SKIP_STEPS="${KERNEL_BUILD_SKIP_STEPS}" \
   --env ROOTFS_BUILD_SKIP_STEPS="${ROOTFS_BUILD_SKIP_STEPS}" \
   --env CLEAN_KERNEL_DOWNLOAD="${CLEAN_KERNEL_DOWNLOAD}" \
+  --env TARGET_ROOTFS_EXTRA_PACKAGES="${TARGET_ROOTFS_EXTRA_PACKAGES}" \
   "ghcr.io/potassium-os/build-env-${TARGET_DISTRO}:${BUILDENV_TAG}" \
     /bin/bash -c "${@}"
