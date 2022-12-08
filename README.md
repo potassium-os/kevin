@@ -1,5 +1,8 @@
 # Why is this archived?
-I libreboot'ed my `kevin` and no longer need chromeos style images
+I libreboot'ed my `kevin`, thus
+
+- I no longer have cros firmware to test against
+- I no longer need cros style images
 
 # What is this?
 Embedded Linux image build tooling for the chromebook `kevin` and ubuntu LUNAR LOBSTER
