@@ -24,13 +24,6 @@ DEFAULT_TOP_DIR=$(cd "$DEFAULT_TOP_DIR" || exit 1; pwd)
 # default TOP_DIR to SCRIPT_DIR
 TOP_DIR="${TOP_DIR:-$SCRIPT_DIR}"
 
-# setup version (used in logo, lol)
-VERSION="$(cd ${TOP_DIR} && git rev-parse HEAD)"
-
-if [[ $(git diff --stat) != '' ]]; then
-  VERSION="${VERSION}-dirty"
-fi
-
 # where target config files and etc live
 TARGETS_DIR="${TOP_DIR}/targets"
 

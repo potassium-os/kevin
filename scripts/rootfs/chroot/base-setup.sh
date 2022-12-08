@@ -4,11 +4,13 @@ echo "--- start scripts/rootfs/chroot/base-setup.sh ---"
 
 #
 # check that we're in a chroot
-if ! (ischroot)
-then
-  echo "This script meant to be run within a chroot!"
-  exit 1
-fi
+# TODO: fix to work in rootless podman build env
+#
+# if ! (ischroot)
+# then
+#   echo "This script meant to be run within a chroot!"
+#   exit 1
+# fi
 
 # debug mode = set -x = loud
 DEBUG="${DEBUG:-false}"

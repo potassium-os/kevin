@@ -26,15 +26,14 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 # default variables
 . "${TOP_DIR}/scripts/common/config.sh"
 
-podman run \
+docker run \
   --rm \
   -it \
-  --userns=keep-id \
   --privileged \
   --net=host \
   --cap-add=SYS_ADMIN \
   --security-opt apparmor:unconfined \
-  --volume "$TOP_DIR:/opt/workdir:rw,dev,exec,suid" \
+  --volume "$TOP_DIR:/opt/workdir:rw" \
   --env TARGET="${TARGET}" \
   --env DEBUG="${DEBUG}" \
   --env CLEAN_BUILD="${CLEAN_BUILD}" \
@@ -45,3 +44,5 @@ podman run \
   --env TARGET_ROOTFS_EXTRA_PACKAGES="${TARGET_ROOTFS_EXTRA_PACKAGES}" \
   "ghcr.io/potassium-os/build-env-${TARGET_DISTRO}:${BUILDENV_TAG}" \
     /bin/bash -c "${@}"
+
+#   --userns=keep-id \
