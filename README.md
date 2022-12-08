@@ -1,11 +1,13 @@
-# Why is this archived?
-I libreboot'ed my `kevin`, thus
-
-- I no longer have cros firmware to test against
-- I no longer need cros style images
-
 # What is this?
-Embedded Linux image build tooling for the chromebook `kevin` and ubuntu LUNAR LOBSTER
+Embedded Linux image build tooling for the chromebook `kevin`
+
+Main boot support is for efistub via u-boot on libreboot firmware. \
+OS support is focused on Ubuntu at the moment, but this should work with any deb-like distro.
+
+Effort will be made to keep this compatiable with default google firmware, \
+but note that I no longer have hardware to test against \
+(unless I reflash back, which I could be convinced to do.) \
+(but it'd be more fun if you libreboot'ed too)
 
 ## What do I need?
 Any modern linux with docker installed \
