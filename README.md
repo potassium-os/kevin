@@ -1,7 +1,8 @@
-# potassium
-Embedded Linux image build tooling
+# Why is this archived?
+I libreboot'ed my `kevin` and no longer need chromeos style images
 
-At the moment it only supports the chromebook `kevin` and ubuntu LUNAR LOBSTER
+# What is this?
+Embedded Linux image build tooling for the chromebook `kevin` and ubuntu LUNAR LOBSTER
 
 ## What do I need?
 Any modern linux with docker installed \
