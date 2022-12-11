@@ -35,7 +35,7 @@ mkdir -p "${ROOTFS_DIR}"
 
 # debootstrap it
 echo "Running debootstrap for ${TARGET_DISTRO_CODENAME} into ${ROOTFS_DIR}"
-sudo debootstrap \
+sudo fakeroot debootstrap \
   --arch="${TARGET_ARCH}" \
   --include="${TARGET_ROOTFS_PACKAGES}" \
   --components="${TARGET_DEBOOTSTRAP_COMPONENTS}" \

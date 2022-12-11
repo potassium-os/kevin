@@ -2,7 +2,7 @@
 
 # called by build.sh in this dir
 
-echo "--- start scripts/image/build-depthcharge.sh ---"
+echo "--- start scripts/image/build/depthcharge.sh ---"
 
 # debug mode = set -x = loud
 DEBUG="${DEBUG:-false}"
@@ -143,4 +143,4 @@ sudo losetup -d "${LOOP_DEVICE}"
 
 # and we're done
 
-echo "--- end scripts/image/build-depthcharge.sh ---"
+echo "--- end scripts/image/build/depthcharge.sh ---"

@@ -30,7 +30,11 @@ TOP_DIR="${TOP_DIR:-$DEFAULT_TOP_DIR}"
 
 case "${TARGET_BOOTLOADER}" in
   "depthcharge")
-    . "${TOP_DIR}/scripts/image/build-depthcharge.sh"
+    . "${TOP_DIR}/scripts/image/build/depthcharge.sh"
+  ;;
+
+  "uboot-libreboot-efi")
+    . "${TOP_DIR}/scripts/image/build/uboot-libreboot-efi.sh"
   ;;
 
   *)
@@ -38,4 +42,4 @@ case "${TARGET_BOOTLOADER}" in
     exit 1
 esac
 
-echo "--- end scripts/image/build.sh ---"
+echo "--- end scripts/image/build/uboot-libreboot-efi.sh ---"

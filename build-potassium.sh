@@ -39,8 +39,8 @@ LOGO=$(cat <<END
   ║                            ║  
   ║                            ║  
   ╚════════════════════════════╝  
-  Potassium ${VERSION}
-  
+  Potassium
+
 END
 )
 

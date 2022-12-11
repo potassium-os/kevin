@@ -4,11 +4,13 @@ echo "--- start scripts/rootfs/chroot/base-setup.sh ---"
 
 #
 # check that we're in a chroot
-if ! (ischroot)
-then
-  echo "This script meant to be run within a chroot!"
-  exit 1
-fi
+# TODO: fix to work in rootless podman build env
+#
+# if ! (ischroot)
+# then
+#   echo "This script meant to be run within a chroot!"
+#   exit 1
+# fi
 
 # debug mode = set -x = loud
 DEBUG="${DEBUG:-false}"
@@ -90,13 +92,5 @@ rm -rf /etc/preseed
 #
 # install extra packages
 apt-get -yq install "${TARGET_ROOTFS_EXTRA_PACKAGES}"
-
-#
-# install depthcharge-tools from src
-pip3 install depthcharge-tools
-# add python3 to root PATH
-# We want this to output $PATH without expansion
-# shellcheck disable=SC2016
-echo 'PATH="/usr/lib/python3/dist-packages:${PATH}"' >> /root/.profile
 
 echo "--- end scripts/rootfs/chroot/base-setup.sh ---"
